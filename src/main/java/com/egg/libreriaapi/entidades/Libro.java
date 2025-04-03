@@ -9,8 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Data;
 
 @Entity
+@Data
 public class Libro {
     @Id
     private Long isbn;
@@ -23,6 +25,8 @@ public class Libro {
     @Temporal(TemporalType.DATE)
     private Date alta;
 
+    private boolean activo;
+
     @ManyToOne
     @JoinColumn(name = "id_autor")
     private Autor autor;
@@ -30,55 +34,4 @@ public class Libro {
     @ManyToOne
     @JoinColumn(name = "id_editorial")
     private Editorial editorial;
-
-    public Libro() {
-    }
-
-    public Long getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Integer getEjemplares() {
-        return ejemplares;
-    }
-
-    public void setEjemplares(Integer ejemplares) {
-        this.ejemplares = ejemplares;
-    }
-
-    public Date getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Date alta) {
-        this.alta = alta;
-    }
-
-    public Autor getAutor() {
-        return autor;
-    }
-
-    public void setAutor(Autor autor) {
-        this.autor = autor;
-    }
-
-    public Editorial getEditorial() {
-        return editorial;
-    }
-
-    public void setEditorial(Editorial editorial) {
-        this.editorial = editorial;
-    }
 }
