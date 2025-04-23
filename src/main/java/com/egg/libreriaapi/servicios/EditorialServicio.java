@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.excepciones.MiExcepcion;
+import com.egg.libreriaapi.modelos.EditorialDTO;
 import com.egg.libreriaapi.repositorios.EditorialRepositorio;
 
 @Service
@@ -33,6 +34,16 @@ public class EditorialServicio {
     @Transactional(readOnly = true)
     public List<Editorial> listarEditoriales() {
         return editorialRepositorio.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public EditorialDTO listarEditorial(String id) throws Exception {
+        Optional<Editorial> res = getOne(id);
+        if (res.isPresent()) {
+            EditorialDTO editorialListar = new EditorialDTO();
+            editorialListar.setNombre(res.get().getNombre());
+            return editorialListar;
+        } else throw new Exception("No se encontró la editorial.");
     }
 
     @Transactional
