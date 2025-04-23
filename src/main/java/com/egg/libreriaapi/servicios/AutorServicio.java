@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.egg.libreriaapi.entidades.Autor;
+import com.egg.libreriaapi.entidades.Libro;
 import com.egg.libreriaapi.excepciones.MiExcepcion;
+import com.egg.libreriaapi.modelos.AutorListarDTO;
 import com.egg.libreriaapi.repositorios.AutorRepositorio;
+import com.egg.libreriaapi.repositorios.LibroRepositorio;
 
 
 @Service
@@ -16,8 +19,11 @@ public class AutorServicio {
 
     private AutorRepositorio autorRepositorio;
 
-    public AutorServicio(AutorRepositorio autorRepositorio) {
+    private LibroRepositorio libroRepositorio;
+
+    public AutorServicio(AutorRepositorio autorRepositorio, LibroRepositorio libroRepositorio) {
         this.autorRepositorio = autorRepositorio;
+        this.libroRepositorio = libroRepositorio;
     }
 
     @Transactional
@@ -58,6 +64,30 @@ public class AutorServicio {
         if (respuesta.isPresent()) {
             respuesta.get().setActivo(false);
         }
+    }
+
+    @Transactional
+    public AutorListarDTO listarAutor(String id) throws Exception {
+        Optional<Autor> res = getOne(id);
+        if (res.isPresent()) {
+            AutorListarDTO autorListar = new AutorListarDTO();
+            autorListar.setNombre(res.get().getNombre());
+            return autorListar;
+        } else {
+            throw new Exception("No se encontró el autor.");
+        }
+    }
+
+    @Transactional
+    public void eliminarAutor(String id) throws MiExcepcion {
+        Optional<Autor> res = getOne(id);
+        if (res.isPresent()) {
+            List<Libro> libros = libroRepositorio.listarLibrosPorIdAutor(id);
+            for (Libro libro : libros) {
+                libro.setActivo(false);
+            }
+            res.get().setActivo(false);
+        } else throw new MiExcepcion("No se encontró el autor.");
     }
 
     private void validar(String nombre) throws MiExcepcion {
