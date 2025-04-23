@@ -1,13 +1,11 @@
 package com.egg.libreriaapi.servicios;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.egg.libreriaapi.entidades.Autor;
 import com.egg.libreriaapi.entidades.Editorial;
 import com.egg.libreriaapi.excepciones.MiExcepcion;
 import com.egg.libreriaapi.modelos.EditorialDTO;
